@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="#@lang_code">
+<html lang="fr">
   <head>
-    <title>#@name_app</title>
-    <meta name="description" content="#@description" />
+    <title>BreakLock</title>
+    <meta name="description" content="Un mélange entre Mastermind et l’écran de verrouillage d’Android. Un jeu que vous allez adorer détester." />
     <base href="/breaklock/" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="assets/favicon.ico" />
     <meta name="theme-color" content="#000000" />
 
-    <link rel="manifest" href="#@lang_code/manifest.json" />
+    <link rel="manifest" href="fr/manifest.json" />
 
     <!-- Add to home screen for Safari on iOS -->
     <link rel="apple-touch-icon" href="assets/icons/ios-180x180.png" />
@@ -52,8 +52,8 @@
     />
     <meta name="msapplication-TileColor" content="#000000" />
 
-    <link id="app-css-placeholder" rel="stylesheet" type="text/css" href="#@lang_code/app.css" />
-    #@special_css
+    <link id="app-css-placeholder" rel="stylesheet" type="text/css" href="fr/app.css" />
+    <style></style>
   </head>
 
   <body>
@@ -96,21 +96,21 @@
           data="assets/intro.svg"
           type="image/svg+xml"
         ></object>
-        <p>#@description_game</p>
+        <p>Reliez les points pour trouver la combinaison secrète. Après chaque essai le jeu vous informera du nombre de points correctement placés.</p>
         <p></p>
         <table>
           <tr>
             <td style="width: 1.5em">&#9679;</td>
-            <td>#@description_white</td>
+            <td>un point est dans la combinaison et est dans le bon ordre</td>
           </tr>
           <tr>
             <td>&#9675;</td>
-            <td>#@description_black</td>
+            <td>un point est dans la combinaison mais pas dans le bon ordre</td>
           </tr>
         </table>
-        <p>#@description_difficulty</p>
-        <p>#@label_goodluck</p>
-        <p class="small">#@attribution</p>
+        <p>Le paramètre de difficulté fait varier le nombre de points dans la combinaison à trouver. Facile est en 4 points, moyen est en 5 points et difficile est en 6 points.</p>
+        <p>Bonne chance !_</p>
+        <p class="small">par <a href="https://twitter.com/mxwllt"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-maxwellito"></use></svg></a> / sur <a href="https://github.com/maxwellito/breaklock"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-github"></use></svg></a></p>
       </div>
     </div>
     <!-- SVG Icon definitions -->
@@ -182,7 +182,7 @@
       <![endif]-->
     </noscript>
 
-    <script src="#@lang_code/app.js"></script>
+    <script src="fr/app.js"></script>
     <script type="text/javascript">
       // Resolve language placeholders at runtime so opening the
       // source files directly (without running the build) still works.
@@ -213,13 +213,13 @@
 
         // Fix stylesheet placeholder if present
         var cssEl = document.getElementById('app-css-placeholder');
-        if (cssEl && cssEl.href.indexOf('#@lang_code') !== -1) {
-          cssEl.href = cssEl.getAttribute('href').replace('#@lang_code', lang);
+        if (cssEl && cssEl.href.indexOf('fr') !== -1) {
+          cssEl.href = cssEl.getAttribute('href').replace('fr', lang);
         }
 
         // Dynamically load the app script (replace placeholder)
-        var template = '#@lang_code/app.js';
-        var scriptSrc = template.indexOf('#@') === -1 ? template : template.replace('#@lang_code', lang);
+        var template = 'fr/app.js';
+        var scriptSrc = template.indexOf('#@') === -1 ? template : template.replace('fr', lang);
         var s = document.createElement('script');
         s.src = scriptSrc;
         s.onload = function () {
