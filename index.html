@@ -52,7 +52,7 @@
     />
     <meta name="msapplication-TileColor" content="#000000" />
 
-    <link rel="stylesheet" type="text/css" href="#@lang_code/app.css" />
+    <link id="app-css-placeholder" rel="stylesheet" type="text/css" href="#@lang_code/app.css" />
     #@special_css
   </head>
 
@@ -184,16 +184,72 @@
 
     <script src="#@lang_code/app.js"></script>
     <script type="text/javascript">
-      // Set up service worker
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
-      }
+      // Resolve language placeholders at runtime so opening the
+      // source files directly (without running the build) still works.
+      (function () {
+        var supported = ['fa', 'en', 'zh', 'ru', 'fr', 'pt_br'];
 
-      // Easter Egg to get it full black
-      // Awesome for OLED screens
-      if (localStorage.getItem('isDeepBlack')) {
-        document.body.classList.add('deepblack');
-      }
+        function detectLangFromPath () {
+          var parts = window.location.pathname.split('/').filter(Boolean);
+          for (var i = parts.length - 1; i >= 0; i--) {
+            if (supported.indexOf(parts[i]) !== -1) return parts[i];
+          }
+          return null;
+        }
+
+        function detectLang () {
+          var lang = detectLangFromPath();
+          if (lang) return lang;
+          var nav = navigator.languages || [navigator.language || 'en'];
+          for (var i = 0; i < nav.length; i++) {
+            var l = nav[i];
+            if (l === 'en') break;
+            if (supported.indexOf(l) !== -1) return l;
+          }
+          return 'en';
+        }
+
+        var lang = detectLang();
+
+        // Fix stylesheet placeholder if present
+        var cssEl = document.getElementById('app-css-placeholder');
+        if (cssEl && cssEl.href.indexOf('#@lang_code') !== -1) {
+          cssEl.href = cssEl.getAttribute('href').replace('#@lang_code', lang);
+        }
+
+        // Dynamically load the app script (replace placeholder)
+        var template = '#@lang_code/app.js';
+        var scriptSrc = template.indexOf('#@') === -1 ? template : template.replace('#@lang_code', lang);
+        var s = document.createElement('script');
+        s.src = scriptSrc;
+        s.onload = function () {
+          // Set up service worker only after the app script loads
+          if ('serviceWorker' in navigator) {
+            try { navigator.serviceWorker.register('service-worker.js'); } catch (e) {}
+          }
+          if (localStorage.getItem('isDeepBlack')) document.body.classList.add('deepblack');
+        };
+        s.onerror = function () {
+          // If loading fails, register service worker if possible and apply deep black
+          if ('serviceWorker' in navigator) {
+            try { navigator.serviceWorker.register('service-worker.js'); } catch (e) {}
+          }
+          if (localStorage.getItem('isDeepBlack')) document.body.classList.add('deepblack');
+
+          // Remove the persistent loading intro and show a helpful message
+          try {
+            var intro = document.getElementById('app-intro');
+            if (intro) intro.remove();
+
+            var err = document.createElement('div');
+            err.id = 'app-error';
+            err.style.cssText = 'color:#fff;background:#111;padding:20px;border-radius:8px;margin:40px auto;max-width:600px;font-family:monospace;';
+            err.innerHTML = '<strong>Unable to load the app.</strong><br/>The built files (e.g. "en/app.js") are missing. To run locally, either build the app or serve a production build.\n<br/><br/>Quick options:<ul style="margin:0;padding-left:1.2em"><li>Run the build: <code>npm install && npm run build</code></li><li>Or open a prebuilt site (if available) that contains an "en/app.js" file.</li></ul>';
+            document.body.appendChild(err);
+          } catch (e) {}
+        };
+        document.body.appendChild(s);
+      })();
     </script>
   </body>
 </html>

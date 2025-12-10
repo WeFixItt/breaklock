@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/maxwellito/breaklock.git"
+    "url": "https://github.com/wefixitt/breaklock.git"
   },
-  "author": "maxwellito",
+  "author": "wefixitt",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/maxwellito/breaklock/issues"
+    "url": "https://github.com/wefixitt/breaklock/issues"
   },
-  "homepage": "https://github.com/maxwellito/breaklock",
+  "homepage": "https://github.com/wefixitt/breaklock",
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
