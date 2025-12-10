@@ -70,9 +70,9 @@ const build = async () => {
     ]);
   }));
   await Promise.all([
+    // Keep root index.html with placeholders so runtime detection can replace them
     handleRelativeCopy(join(buildFolder, 'en', 'app.css'), join(buildFolder, 'app.css')),
     handleRelativeCopy(join(buildFolder, 'en', 'manifest.json'), join(buildFolder, 'manifest.json')),
-    handleRelativeCopy(join(buildFolder, 'en', 'index.html'), join(buildFolder, 'index.html')),
     handleRelativeCopy(join(buildFolder, 'en', 'app.js'), join(buildFolder, 'app.js')),
   ]);
   console.log('Finished successfully.');
